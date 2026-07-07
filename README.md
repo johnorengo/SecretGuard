@@ -25,7 +25,7 @@ Leaked credentials can expose cloud accounts, databases, internal systems, and c
 ## Installation
 
 ```bash
-git clone https://github.com/example/secretguard.git
+git clone https://github.com/johnorengo/SecretGuard.git
 cd secretguard
 pip install .
 ```
@@ -114,37 +114,43 @@ Each finding includes the rule name, severity, file path, line number, recommend
 
 ```text
 secretguard/
-├── secretguard/
-│   ├── __init__.py
-│   ├── scanner.py
-│   ├── detector.py
-│   ├── reporter.py
-│   ├── cli.py
-│   ├── config.py
-│   └── utils.py
-├── rules/
-│   └── patterns.json
-├── reports/
-├── tests/
-├── examples/
-├── docs/
-├── README.md
-├── requirements.txt
-├── setup.py
-├── pyproject.toml
-├── .gitignore
-└── LICENSE
+|-- secretguard/
+|   |-- __init__.py
+|   |-- scanner.py
+|   |-- detector.py
+|   |-- reporter.py
+|   |-- cli.py
+|   |-- config.py
+|   `-- utils.py
+|-- rules/
+|   `-- patterns.json
+|-- reports/
+|-- tests/
+|-- examples/
+|-- docs/
+|-- README.md
+|-- requirements.txt
+|-- setup.py
+|-- pyproject.toml
+|-- .gitignore
+`-- LICENSE
 ```
 
 The scanner walks repositories safely, the detector applies JSON-backed regex rules, and the reporter renders both terminal and machine-readable output.
 
 ## Screenshots
 
-Add screenshots or terminal captures here:
+### CLI Scan
 
-```text
-docs/images/demo.png
-```
+![SecretGuard CLI scan](docs/images/Screenshot%202026-07-07%20213244.png)
+
+### Security Report
+
+![SecretGuard security report](docs/images/Screenshot%202026-07-07%20213307.png)
+
+### Project Workflow
+
+![SecretGuard project workflow](docs/images/Screenshot%202026-07-07%20214742.png)
 
 ## Security Recommendations
 
