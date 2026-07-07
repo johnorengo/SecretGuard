@@ -25,6 +25,12 @@ IGNORED_DIRECTORIES = {
     "build",
 }
 
+IGNORED_DIRECTORY_PATHS = {
+    ("storage", "framework", "views"),
+    ("storage", "framework", "cache"),
+    ("bootstrap", "cache"),
+}
+
 IGNORED_FILES = {
     ".env.example",
 }

@@ -60,7 +60,7 @@
     "recommendation": "Remove the token, rotate it with the provider, and inject it at runtime from a secure source."
   },
   "Environment Secret": {
-    "pattern": "\\b[A-Z0-9_]*(SECRET|TOKEN|PASSWORD|PRIVATE_KEY)[A-Z0-9_]*\\s*=\\s*[^\\s#]{8,}",
+    "pattern": "(?<![\\w$])(?:[A-Z0-9_]*_)?(?:api[_-]?key|secret|token|password|passwd|pwd|access[_-]?key|private[_-]?key)[A-Z0-9_]*\\s*[:=]\\s*[\"']?[^\"'\\s#;,)]{20,}[\"']?",
     "severity": "MEDIUM",
     "recommendation": "Keep real environment secrets out of committed files. Commit only safe examples with placeholder values."
   }

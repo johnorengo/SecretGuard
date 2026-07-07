@@ -8,7 +8,8 @@ def test_scanner_counts_files_and_findings(tmp_path) -> None:
     safe_file = tmp_path / "safe.py"
     safe_file.write_text("print('hello')", encoding="utf-8")
     vulnerable_file = tmp_path / "config.py"
-    vulnerable_file.write_text("GITHUB_TOKEN='ghp_abcdefghijklmnopqrstuvwxyz1234567890ABCD'", encoding="utf-8")
+    github_token = "ghp_" + "abcdefghijklmnopqrstuvwxyz1234567890ABCD"
+    vulnerable_file.write_text(f"GITHUB_TOKEN='{github_token}'", encoding="utf-8")
 
     result = RepositoryScanner().scan(tmp_path)
 
@@ -30,6 +31,26 @@ def test_scanner_ignores_directories_and_env_example(tmp_path) -> None:
     assert result.files_scanned == 0
     assert result.total_findings == 0
     assert result.risk_level == "SECURE"
+
+
+def test_scanner_ignores_framework_cache_directories(tmp_path) -> None:
+    ignored_paths = [
+        tmp_path / "storage" / "framework" / "views",
+        tmp_path / "storage" / "framework" / "cache",
+        tmp_path / "bootstrap" / "cache",
+    ]
+    for ignored_path in ignored_paths:
+        ignored_path.mkdir(parents=True)
+        cached_file = ignored_path / "compiled.php"
+        cached_file.write_text(
+            "API_KEY=dummy_api_key_value_abcdefghijklmnopqrstuvwxyz",
+            encoding="utf-8",
+        )
+
+    result = RepositoryScanner().scan(tmp_path)
+
+    assert result.files_scanned == 0
+    assert result.total_findings == 0
 
 
 def test_json_report_generation(tmp_path) -> None:

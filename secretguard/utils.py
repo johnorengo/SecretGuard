@@ -4,15 +4,35 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .config import IGNORED_DIRECTORIES, IGNORED_FILES, MAX_FILE_SIZE_BYTES
+from .config import (
+    IGNORED_DIRECTORIES,
+    IGNORED_DIRECTORY_PATHS,
+    IGNORED_FILES,
+    MAX_FILE_SIZE_BYTES,
+)
 
 
 def should_ignore_path(path: Path) -> bool:
     """Return True when a path should be skipped during repository scanning."""
-    parts = set(path.parts)
+    normalized_parts = tuple(part.lower() for part in path.parts)
+    parts = set(normalized_parts)
     if parts.intersection(IGNORED_DIRECTORIES):
         return True
+    if _contains_path_sequence(normalized_parts, IGNORED_DIRECTORY_PATHS):
+        return True
     return path.name in IGNORED_FILES
+
+
+def _contains_path_sequence(
+    path_parts: tuple[str, ...],
+    ignored_paths: set[tuple[str, ...]],
+) -> bool:
+    for ignored_path in ignored_paths:
+        ignored_length = len(ignored_path)
+        for index in range(len(path_parts) - ignored_length + 1):
+            if path_parts[index : index + ignored_length] == ignored_path:
+                return True
+    return False
 
 
 def is_probably_text_file(path: Path) -> bool:

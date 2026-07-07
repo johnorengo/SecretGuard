@@ -11,6 +11,16 @@ from typing import Any
 from .config import RULES_PATH
 
 GENERIC_RULE_NAMES = {"Environment Secret"}
+MIN_SECRET_MATCH_LENGTH = 20
+SAFE_FRAMEWORK_PATTERNS = (
+    "csrf_token",
+    "Hash::make",
+    "passwordRoute",
+    "config(",
+    "route(",
+    "in_array(",
+    "array_intersect",
+)
 
 
 @dataclass(frozen=True)
@@ -70,12 +80,17 @@ class SecretDetector:
         findings: list[Finding] = []
 
         for line_number, line in enumerate(content.splitlines(), start=1):
+            if _is_safe_framework_line(line):
+                continue
+
             line_findings: list[Finding] = []
             for rule, compiled_pattern in self._compiled_rules:
                 if line_findings and rule.name in GENERIC_RULE_NAMES:
                     continue
                 for match in compiled_pattern.finditer(line):
                     matched_value = match.group(0)
+                    if len(matched_value.strip()) < MIN_SECRET_MATCH_LENGTH:
+                        continue
                     line_findings.append(
                         Finding(
                             rule_name=rule.name,
@@ -111,3 +126,7 @@ class SecretDetector:
             )
 
         return rules
+
+
+def _is_safe_framework_line(line: str) -> bool:
+    return any(pattern in line for pattern in SAFE_FRAMEWORK_PATTERNS)
