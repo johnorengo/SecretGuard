@@ -1,0 +1,67 @@
+{
+  "AWS Access Key": {
+    "pattern": "\\bAKIA[0-9A-Z]{16}\\b",
+    "severity": "HIGH",
+    "recommendation": "Remove the AWS access key, rotate the credential, and use IAM roles or environment-based secret management."
+  },
+  "AWS Secret Key": {
+    "pattern": "(aws(.{0,20})?(secret|private)?(.{0,20})?(key|token)\\s*[:=]\\s*[\"']?[A-Za-z0-9/+=]{40}[\"']?)",
+    "severity": "CRITICAL",
+    "recommendation": "Remove the AWS secret key immediately, rotate it in AWS IAM, and audit recent account activity."
+  },
+  "Google API Key": {
+    "pattern": "\\bAIza[0-9A-Za-z\\-_]{35}\\b",
+    "severity": "HIGH",
+    "recommendation": "Delete the Google API key from source code, rotate it, and restrict the replacement key by service and origin."
+  },
+  "GitHub Token": {
+    "pattern": "\\b(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36,255}\\b",
+    "severity": "CRITICAL",
+    "recommendation": "Revoke the GitHub token, generate a new least-privilege token, and store it in a secure secret manager."
+  },
+  "JWT Token": {
+    "pattern": "\\beyJ[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\b",
+    "severity": "MEDIUM",
+    "recommendation": "Avoid committing JWTs. Expire the token and keep runtime tokens outside version control."
+  },
+  "Database URL": {
+    "pattern": "\\b[a-z]+(?:\\+[a-z]+)?://[^\\s:@]+:[^\\s:@]+@[^\\s]+",
+    "severity": "HIGH",
+    "recommendation": "Move database connection URLs into environment variables or a managed secret store and rotate the password."
+  },
+  "MongoDB Connection String": {
+    "pattern": "\\bmongodb(?:\\+srv)?://[^\\s:@]+:[^\\s:@]+@[^\\s]+",
+    "severity": "HIGH",
+    "recommendation": "Remove the MongoDB connection string, rotate the database user password, and use environment configuration."
+  },
+  "MySQL Credentials": {
+    "pattern": "(mysql(.{0,20})?(password|passwd|pwd)\\s*[:=]\\s*[\"']?[^\"'\\s]+[\"']?)",
+    "severity": "HIGH",
+    "recommendation": "Remove MySQL credentials from code, rotate the database password, and load it from a protected runtime secret."
+  },
+  "PostgreSQL Credentials": {
+    "pattern": "(postgres|postgresql)(.{0,40})?(password|passwd|pwd)\\s*[:=]\\s*[\"']?[^\"'\\s]+[\"']?",
+    "severity": "HIGH",
+    "recommendation": "Remove PostgreSQL credentials, rotate the database password, and store it securely outside the repository."
+  },
+  "Private Key": {
+    "pattern": "-----BEGIN (RSA |DSA |EC |OPENSSH |PGP )?PRIVATE KEY-----",
+    "severity": "CRITICAL",
+    "recommendation": "Remove the private key, revoke or rotate dependent credentials, and replace it with a securely generated key."
+  },
+  "Password Variable": {
+    "pattern": "\\b(password|passwd|pwd)\\s*[:=]\\s*[\"'][^\"']{8,}[\"']",
+    "severity": "MEDIUM",
+    "recommendation": "Do not hardcode passwords. Move them to environment variables or a secret management platform."
+  },
+  "API Token": {
+    "pattern": "\\b(api[_-]?token|access[_-]?token|auth[_-]?token)\\s*[:=]\\s*[\"'][A-Za-z0-9_\\-\\.]{16,}[\"']",
+    "severity": "HIGH",
+    "recommendation": "Remove the token, rotate it with the provider, and inject it at runtime from a secure source."
+  },
+  "Environment Secret": {
+    "pattern": "\\b[A-Z0-9_]*(SECRET|TOKEN|PASSWORD|PRIVATE_KEY)[A-Z0-9_]*\\s*=\\s*[^\\s#]{8,}",
+    "severity": "MEDIUM",
+    "recommendation": "Keep real environment secrets out of committed files. Commit only safe examples with placeholder values."
+  }
+}

@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "secretguard"
+version = "1.0.0"
+description = "A lightweight DevSecOps CLI for detecting exposed secrets in source repositories."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "SecretGuard Contributors" }]
+keywords = ["security", "devsecops", "secrets", "cli", "scanner"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Security",
+  "Topic :: Software Development :: Quality Assurance"
+]
+
+[project.scripts]
+secretguard = "secretguard.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["secretguard*", "rules*"]
+
+[tool.setuptools.package-data]
+rules = ["patterns.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

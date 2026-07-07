@@ -1,0 +1,1 @@
+"""Bundled SecretGuard detection rules."""
